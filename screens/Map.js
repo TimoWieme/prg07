@@ -1,10 +1,13 @@
-import MapView, { Marker } from 'react-native-maps';
-import React, { useEffect, useState } from 'react';
+import MapView, { Marker, DarkTheme, DefaultTheme } from 'react-native-maps';
+import React, { useEffect, useState, useContext } from 'react';
 import { FlatList, ActivityIndicator, StyleSheet, Text, View, Dimensions } from 'react-native';
+import themeContext from '../config/themeContext';
+
 
 
 export default function Map() {
-
+    const theme = useContext(themeContext)
+    const [mode, setMode] = useState(false);
     const [bars, setBars] = useState([]);
     const [isLoading, setLoading] = useState(true);
     const rotterdamRegion = {
@@ -51,12 +54,13 @@ export default function Map() {
     })
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, {backgroundColor: theme.background}]}>
             {isLoading ? <ActivityIndicator /> : (
                 <MapView
                     style={styles.map}
                     showsUserLocation
                     initialRegion={rotterdamRegion}
+                    theme = {mode === true ? DarkTheme : DefaultTheme}
                 >
                     {markers}
                 </MapView>
