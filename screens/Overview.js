@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
-import { Text, View, ScrollView } from 'react-native';
+import { Text, View, FlatList, SafeAreaView } from 'react-native';
+import BarCard from '../components/BarCard.js'
 
 // import Card, {DarkTheme, DefaultTheme} from '../components/BarCard'
 
@@ -23,35 +24,30 @@ export default function Overview({ navigation, colorScheme }) {
         getBars();
     }, []);
 
-    // console.log(bars);
+    console.log(bars);
 
 
-        // const cards = bars.map((bar, index) => {
+        const barList = bars.map((bar, index) => {
 
-        //     return (
-        //             <Card
-        //             key={index}
-        //             title={bar.name}
-        //             />
-        //     )
-        // })
+            return (
+                <BarCard
+                bar={bar} 
+                />
+            )
+        })
         return(
            <View style={colorScheme.containerStyle}>
                 <Text style={colorScheme.titleStyle}>
                     Overview Screen!
-                </Text>           
+                </Text>  
+                {/* <SafeAreaView style={colorScheme.safeAreaViewStyle}>
+                <FlatList
+                id={barList.name}
+                title={barList}
+                >
+                </FlatList>
+                </SafeAreaView>  */}
+                {barList}  
             </View>
         )
     }
-
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         flexDirection: 'column',
-//         backgroundColor: '#fff',
-//     },
-//     text: {
-
-//     },
-    
-// });

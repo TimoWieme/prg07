@@ -58,7 +58,6 @@ export default function Map() {
                     style={styles.map}
                     showsUserLocation
                     initialRegion={rotterdamRegion}
-                    theme = {mode === true ? DarkTheme : DefaultTheme}
                 >
                     {markers}
                 </MapView>

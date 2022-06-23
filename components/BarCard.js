@@ -1,14 +1,15 @@
 import React from 'react';
 import {Text, View, StyleSheet, Dimensions} from 'react-native'
-import Card from "react-native-card-component";
 
-
-const BarCard = () => {
+const BarCard = ({bar}) => {
+    
     return (
         <View style={styles.cardContainer}>
-            <Text>Hallo</Text>
+            <Text>
+                {bar.name}
+                {/* {bar.lat} */}
+            </Text>
         </View>
-
     )
 }
 

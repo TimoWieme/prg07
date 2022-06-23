@@ -22,6 +22,15 @@ const light = StyleSheet.create({
     pickerText: {
         color: "black",
         backgroundColor: "#f2f2f2",
+    },
+    flatList: {
+        ...style.flatList,
+        backgroundColor: '#f2f2f2',
+        color: 'black',
+    },
+    safeAreaView: {
+        ...style.safeAreaView,
+        flex: 1,
     }
 
 })
