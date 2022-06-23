@@ -1,40 +1,129 @@
 // import * as React from 'react';
 import React, { useState, useEffect } from 'react';
-import { NavigationContainer, DarkTheme, DefaultTheme } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { EventRegister } from 'react-native-event-listeners';
-// Import themes for dark theme
-import themeContext from './config/themeContext';
-import theme from './config/theme';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+// Import styles
+import beer from "./styles/beer.js";
+import dark from "./styles/dark.js";
+import light from "./styles/light.js";
+
 // Importeer alle pagina's
 import Home from './screens/Home';
 import Map from './screens/Map';
 import Overview from './screens/Overview';
 import Settings from './screens/Settings';
+// Import icons
 import { Ionicons } from '@expo/vector-icons';
-
-
-const Tab = createBottomTabNavigator();
+// import Colerscheme
+import { useColorScheme } from 'react-native';
 
 export default function App() {
-  // Set mode for dark theme, false is default
-  const [mode, setMode] = useState(false);
+  const Tab = createBottomTabNavigator()
+
+  const [theme, setTheme] = useState();
+  const [colorScheme, setColorScheme] = useState({
+    mode: "light",
+    textStyle: light.text,
+    containerStyle: light.container,
+    titleStyle: light.title,
+    pickerContainerStyle: light.pickerContainer,
+    pickerTextStyle: light.pickerText,
+    navTheme: darkMode,
+    tabBarActive: '#b30000',
+    tabBarinActive: '#d3d3d3',
+  })
+
+  const darkMode = {
+    dark: false,
+    colors: {
+      ...DefaultTheme.colors,
+      card: '#131318',
+      text: 'black',
+      border: 'rgba(0, 0, 0, 0.5)',
+    },
+  };
+  const beerMode = {
+    dark: false,
+    colors: {
+      ...DefaultTheme.colors,
+      card: '#10161a',
+      text: 'yellow',
+      border: 'rgba(0, 0, 0, 0.5)',
+    }
+  }
+
+  if (theme === 'light') {
+    colorScheme.textStyle = light.text
+    colorScheme.containerStyle = light.container
+    colorScheme.titleStyle = light.title
+    colorScheme.pickerContainerStyle = light.pickerContainer
+    colorScheme.pickerTextStyle = light.pickerText
+    colorScheme.navTheme = DefaultTheme
+    colorScheme.tabBarActive = '#b30000'
+    colorScheme.tabBarinActive = '#d3d3d3'
+  } else if (theme === 'dark') {
+    colorScheme.textStyle = dark.text
+    colorScheme.containerStyle = dark.container
+    colorScheme.titleStyle = dark.title
+    colorScheme.pickerContainerStyle = dark.pickerContainer
+    colorScheme.pickerTextStyle = dark.pickerText
+    colorScheme.navTheme = darkMode
+    colorScheme.tabBarActive = '#b30000'
+    colorScheme.tabBarinActive = '#d3d3d3'
+  } else if (theme === 'beer') {
+    colorScheme.textStyle = beer.text
+    colorScheme.containerStyle = beer.container
+    colorScheme.titleStyle = beer.title
+    colorScheme.pickerContainerStyle = beer.pickerContainer
+    colorScheme.pickerTextStyle = beer.pickerText
+    colorScheme.navTheme = beerMode
+    colorScheme.tabBarActive = 'yellow'
+    colorScheme.tabBarinActive = 'white'
+  }
+
+
+  const getTheme = async () => {
+    try {
+      const item = await AsyncStorage.getItem('theme')
+      if (theme !== null) {
+        setTheme(item)
+        setColorScheme((currentColorScheme) => {
+          currentColorScheme.mode = item;
+          return currentColorScheme;
+        })
+      }else{
+        setTheme(useColorScheme())
+      }
+    } catch (e) {
+      // error reading value
+    }
+  }
+
+  const storeTheme = (value) => {
+    try {
+      AsyncStorage.setItem('theme', value)
+      setTheme(value);
+      setColorScheme((currentColorScheme) => {
+        currentColorScheme.mode = value;
+        return currentColorScheme;
+      })
+      getTheme()
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   useEffect(() => {
-    // Set a event listener for the theme and data, so it can be read on other pages
-    let eventListener = EventRegister.addEventListener(
-      "changeTheme",
-      (data) => {
-        setMode(data)
-      }
-    );
-    return () => {
-      EventRegister.removeEventListener(eventListener);
-    };
-  })
+    getTheme()
+}, [])
+
+
   return (
-    <themeContext.Provider value={mode === true ? theme.dark : theme.light}>
-      <NavigationContainer theme={mode === true ? DarkTheme : DefaultTheme}>
+    
+    <NavigationContainer theme={colorScheme.navTheme}>
         <Tab.Navigator
           // Eerste pagina = Home
           initialRouteName="Home"
@@ -59,14 +148,24 @@ export default function App() {
 
               return <Ionicons name={iconName} size={size} color={color} />
             },
-          })}>
-          {/* Maak navigatie tabs aan onderaan het scherm voor elke pagina */}
-          <Tab.Screen name="Home" component={Home} />
-          <Tab.Screen name="Map" component={Map} />
-          <Tab.Screen name="Overview" component={Overview} />
-          <Tab.Screen name="Settings" component={Settings} />
-        </Tab.Navigator>
-      </NavigationContainer>
-    </themeContext.Provider>
+            tabBarActiveTintColor: `${colorScheme.tabBarActive}`,
+            tabBarInactiveTintColor: `${colorScheme.tabBarinActive}`,
+        })}
+      >
+        <Tab.Screen name='Home'>
+          {(props) => <Home {...props} colorScheme={colorScheme} storeTheme={storeTheme} />}
+        </Tab.Screen>
+        <Tab.Screen name='Map'>
+          {(props) => <Map {...props} colorScheme={colorScheme} storeTheme={storeTheme} />}
+        </Tab.Screen>
+        <Tab.Screen name='Overview'>
+          {(props) => <Overview {...props} colorScheme={colorScheme} storeTheme={storeTheme} />}
+        </Tab.Screen>
+        <Tab.Screen name='Settings'>
+          {(props) => <Settings {...props} colorScheme={colorScheme} storeTheme={storeTheme} />}
+        </Tab.Screen>
+      </Tab.Navigator>
+      <StatusBar />
+    </NavigationContainer>
   );
 }

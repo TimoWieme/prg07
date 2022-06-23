@@ -1,6 +1,7 @@
 import MapView, { Marker, DarkTheme, DefaultTheme } from 'react-native-maps';
 import React, { useEffect, useState, useContext } from 'react';
 import { FlatList, ActivityIndicator, StyleSheet, Text, View, Dimensions } from 'react-native';
+
 import themeContext from '../config/themeContext';
 
 
@@ -45,10 +46,7 @@ export default function Map() {
                 }}
                 title={bar.name}
                 image = {require('../src/marker.png')}
-                
                 >
-            {/* <Image source={require('../img/test1.png')} style={{height: 35, width:35 }} /> */}
-
             </Marker>
         )
     })

@@ -1,26 +1,14 @@
-import React, {useContext} from 'react'
-import { Button, StyleSheet, Text, View } from 'react-native';
-import themeContext from '../config/themeContext';
+import React from 'react'
+import { Text, View } from 'react-native';
 
+export default function HomeScreen({ navigation, colorScheme }) {
 
-export default function Overview({ navigation }) {
-    const theme = useContext(themeContext)
     return (
-        <View style={[styles.container, {backgroundColor: theme.background}]}>
-            <Text style={[styles.text, {color: theme.color}]}> Home Screen</Text>
+        <View style={colorScheme.containerStyle}>
+            <Text style={colorScheme.titleStyle}>
+                Home Screen!
+            </Text>
+            <Text style={colorScheme.textStyle}>This is Text</Text>
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    text: {
-
-    }
-    
-});
