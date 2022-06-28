@@ -23,8 +23,8 @@ const light = StyleSheet.create({
         color: "black",
         backgroundColor: "#f2f2f2",
     },
-    flatList: {
-        ...style.flatList,
+    flatlistItem: {
+        ...style.flatlistItem,
         backgroundColor: '#f2f2f2',
         color: 'black',
     },

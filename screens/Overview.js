@@ -1,12 +1,8 @@
-import React, {useState, useEffect} from 'react'
-import { Text, View, FlatList, SafeAreaView } from 'react-native';
-import BarCard from '../components/BarCard.js'
-
-// import Card, {DarkTheme, DefaultTheme} from '../components/BarCard'
-
+import { useState, useEffect } from 'react'
+import { Text, FlatList, SafeAreaView } from 'react-native';
 
 export default function Overview({ navigation, colorScheme }) {
-    const [bars, setBars] = useState([]);
+    const [bars, setBars] = useState([{}])
 
     const getBars = async () => {
         try {
@@ -23,31 +19,31 @@ export default function Overview({ navigation, colorScheme }) {
     useEffect(() => {
         getBars();
     }, []);
-
+    
     console.log(bars);
+    
 
-
-        const barList = bars.map((bar, index) => {
-
-            return (
-                <BarCard
-                bar={bar} 
-                />
-            )
-        })
-        return(
-           <View style={colorScheme.containerStyle}>
-                <Text style={colorScheme.titleStyle}>
-                    Overview Screen!
-                </Text>  
-                {/* <SafeAreaView style={colorScheme.safeAreaViewStyle}>
-                <FlatList
-                id={barList.name}
-                title={barList}
-                >
-                </FlatList>
-                </SafeAreaView>  */}
-                {barList}  
-            </View>
-        )
-    }
+    return (
+        <SafeAreaView style={colorScheme.containerStyle}>
+            <Text style={colorScheme.titleStyle}>
+                List Screen!
+            </Text>
+            {/* Create a Flatlist with the fetched bars */}
+            <FlatList
+                data={bars}
+                renderItem={({ item }) =>
+                    <Text
+                        style={[colorScheme.flatlistItemSyle, colorScheme.textStyle]}
+                        // On press go the map screen and go to the coordinates
+                        onPress={() => navigation.navigate("Map", {
+                            "latitude": item.lat,
+                            "longitude": item.lon,
+                        })}
+                    >
+                        {item.name}
+                    </Text>
+                }
+            />
+                </SafeAreaView>
+                )
+            }
