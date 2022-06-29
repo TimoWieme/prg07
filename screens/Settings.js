@@ -1,11 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Text, View, useColorScheme, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Text, View, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
 
 export default function Settings({ navigation, colorScheme, storeTheme }) {
     const [themeColor, setThemeColor] = useState();
 
+    // Get theme from localstorage
     const getTheme = async () => {
         try {
             const theme = await AsyncStorage.getItem('theme')
@@ -23,25 +24,20 @@ export default function Settings({ navigation, colorScheme, storeTheme }) {
     }, [])
 
 
-    console.log(colorScheme.pickerTextStyle)
+    // console.log(colorScheme.pickerTextStyle)
     return (
         <View style={colorScheme.containerStyle}>
             <Text style={colorScheme.titleStyle}>Settings Screen!</Text>
-            {/* <Switch
-                value={themeColor}
-                onChange={(value) => {
-                    setThemeColor(value)
-                    storeTheme(value);
-                }}
-            /> */}
             <Picker
                 style={colorScheme.pickerContainerStyle}
                 selectedValue={themeColor}
                 itemStyle={colorScheme.pickerTextStyle}
                 onValueChange={(itemValue, itemIndex) =>{
+                    // Safe theme on change
                     setThemeColor(itemValue)
                     storeTheme(itemValue)
                 }}>
+                    {/* Theme choices */}
                 <Picker.Item label="Light Mode" value="light" />
                 <Picker.Item label="Dark Mode" value="dark" />
                 <Picker.Item label="Beer Mode" value="beer" />
@@ -49,16 +45,3 @@ export default function Settings({ navigation, colorScheme, storeTheme }) {
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    text: {
-
-    }
-    
-});

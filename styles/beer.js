@@ -20,7 +20,18 @@ const arcade = StyleSheet.create({
       pickerText: {
         color: "black",
         backgroundColor: "yellow",
-      }
+      },
+      flatlistItem: {
+        ...style.flatlistItem,
+        color: 'black',
+        backgroundColor: "#6eccad",
+        shadowColor: 'white',
+    },
+    input: {
+        ...style.input,
+        color: 'black',
+        backgroundColor:'yellow'
+    }
 
 })
 

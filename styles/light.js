@@ -26,10 +26,17 @@ const light = StyleSheet.create({
     flatlistItem: {
         ...style.flatlistItem,
         color: 'black',
+        backgroundColor: "#6eccad",
+        shadowColor: 'black',
     },
     safeAreaView: {
         ...style.safeAreaView,
         flex: 1,
+    },
+    input: {
+        ...style.input,
+        color: 'black',
+        backgroundColor:'white'
     }
 
 })

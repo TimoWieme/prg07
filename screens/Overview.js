@@ -5,10 +5,10 @@ export default function Overview({ navigation, colorScheme }) {
     const [bars, setBars] = useState([{}])
 
     useEffect(() => {
-        // Fetch for the hotspots and put them in hotspots
+        // Fetch bars and put them in bars
         const getBars = async () => {
             try {
-                await fetch("https://stud.hosted.hr.nl/1004149/bars/bars.json", {cache: 'no-cache'})
+                await fetch("https://stud.hosted.hr.nl/1004149/bars/bars.json")
                     .then((response) => response.json())
                     .then((results) => {
                         let arr = []
@@ -25,7 +25,7 @@ export default function Overview({ navigation, colorScheme }) {
         getBars()
     }, [])
     
-    console.log(bars);
+    // console.log(bars);
     
 
     return (

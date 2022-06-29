@@ -32,6 +32,16 @@ const style = StyleSheet.create({
         shadowOpacity : 0.3,
         elevation : 2,
   },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
+  text: {
+    fontsize: 1,
+    alignItems: 'top',
+  }
 });
 
 export default style

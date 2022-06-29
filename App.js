@@ -1,6 +1,5 @@
-// import * as React from 'react';
 import React, { useState, useEffect } from 'react';
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -10,11 +9,12 @@ import beer from "./styles/beer.js";
 import dark from "./styles/dark.js";
 import light from "./styles/light.js";
 
-// Importeer alle pagina's
+// Importeer all pages
 import Home from './screens/Home';
 import Map from './screens/Map';
 import Overview from './screens/Overview';
 import Settings from './screens/Settings';
+import Descriptions from './screens/Descriptions';
 // Import icons
 import { Ionicons } from '@expo/vector-icons';
 // import Colerscheme
@@ -24,6 +24,7 @@ export default function App() {
   const Tab = createBottomTabNavigator()
 
   const [theme, setTheme] = useState();
+  // Set standard theme
   const [colorScheme, setColorScheme] = useState({
     mode: "light",
     textStyle: light.text,
@@ -36,6 +37,7 @@ export default function App() {
     tabBarinActive: '#d3d3d3',
   })
 
+  // if in dark mode, set these colors
   const darkMode = {
     dark: false,
     colors: {
@@ -45,6 +47,7 @@ export default function App() {
       border: 'rgba(0, 0, 0, 0.5)',
     },
   };
+  // if in beer mode, set these colors
   const beerMode = {
     dark: false,
     colors: {
@@ -54,7 +57,7 @@ export default function App() {
       border: 'rgba(0, 0, 0, 0.5)',
     }
   }
-
+// If in light mode, change these elements to the light color
   if (theme === 'light') {
     colorScheme.textStyle = light.text
     colorScheme.containerStyle = light.container
@@ -65,6 +68,9 @@ export default function App() {
     colorScheme.tabBarActive = '#b30000'
     colorScheme.tabBarinActive = '#d3d3d3'
     colorScheme.flatlistItemStyle = light.flatlistItem
+    colorScheme.input = light.input
+    // If in dark mode, change these elements to the dark color
+
   } else if (theme === 'dark') {
     colorScheme.textStyle = dark.text
     colorScheme.containerStyle = dark.container
@@ -75,6 +81,9 @@ export default function App() {
     colorScheme.tabBarActive = '#b30000'
     colorScheme.tabBarinActive = '#d3d3d3'
     colorScheme.flatlistItemStyle = dark.flatlistItem
+    colorScheme.input = dark.input
+
+    // If in beer mode, change these elements to the beer color
   } else if (theme === 'beer') {
     colorScheme.textStyle = beer.text
     colorScheme.containerStyle = beer.container
@@ -85,9 +94,11 @@ export default function App() {
     colorScheme.tabBarActive = 'yellow'
     colorScheme.tabBarinActive = 'white'
     colorScheme.flatlistItemStyle = beer.flatlistItem
+    colorScheme.input = beer.input
+
   }
 
-
+// Get the theme from local storage
   const getTheme = async () => {
     try {
       const item = await AsyncStorage.getItem('theme')
@@ -105,6 +116,7 @@ export default function App() {
     }
   }
 
+  // Store the theme in local storage
   const storeTheme = (value) => {
     try {
       AsyncStorage.setItem('theme', value)
@@ -128,33 +140,37 @@ export default function App() {
     
     <NavigationContainer theme={colorScheme.navTheme}>
         <Tab.Navigator
-          // Eerste pagina = Home
+          // First page = Home
           initialRouteName="Home"
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
               let rn = route.name;
 
-              // Als de route naam "Home" is, zet icoon van home neer
+              // if route = home, show home icon
               if (rn === "Home") {
                 iconName = focused ? 'home' : 'home-outline'
-                // Als de route naam "Map" is, zet icoon van Map neer
-              } else if (rn === "Map") {
+              // if route = map, show map icon
+            } else if (rn === "Map") {
                 iconName = focused ? 'map' : 'map-outline'
-                // Als de route naam "Overview" is, zet icoon van list neer
-              } else if (rn === "Overview") {
+              // if route = overview, show list icon
+            } else if (rn === "Overview") {
                 iconName = focused ? 'list' : 'list-outline'
-                // Als routenaam "Settings" is, zet icoon van settings
-              } else if (rn === "Settings") {
+              // if route = settings, show settings icon
+            }else if (rn === "Descriptions") {
+              iconName = focused ? 'document-text' : 'document-text-outline'
+            } else if (rn === "Settings") {
                 iconName = focused ? 'settings' : 'settings-outline'
               }
 
               return <Ionicons name={iconName} size={size} color={color} />
             },
+            // set colors of active and inactive tabs
             tabBarActiveTintColor: `${colorScheme.tabBarActive}`,
             tabBarInactiveTintColor: `${colorScheme.tabBarinActive}`,
         })}
       >
+        {/* When tabbed on a tab, go to that tab screen. */}
         <Tab.Screen name='Home'>
           {(props) => <Home {...props} colorScheme={colorScheme} storeTheme={storeTheme} />}
         </Tab.Screen>
@@ -163,6 +179,9 @@ export default function App() {
         </Tab.Screen>
         <Tab.Screen name='Overview'>
           {(props) => <Overview {...props} colorScheme={colorScheme} storeTheme={storeTheme} />}
+        </Tab.Screen>
+        <Tab.Screen name='Descriptions'>
+          {(props) => <Descriptions {...props} colorScheme={colorScheme} storeTheme={storeTheme} />}
         </Tab.Screen>
         <Tab.Screen name='Settings'>
           {(props) => <Settings {...props} colorScheme={colorScheme} storeTheme={storeTheme} />}

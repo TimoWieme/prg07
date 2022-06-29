@@ -26,8 +26,12 @@ const dark = StyleSheet.create({
     color: 'white',
     backgroundColor: "#6eccad",
     shadowColor: 'white',
-
 },
+input: {
+  ...style.input,
+  color: 'white',
+  backgroundColor:'black'
+}
 
 })
 

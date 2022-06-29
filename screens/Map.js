@@ -1,21 +1,24 @@
 import MapView, { Marker } from 'react-native-maps';
 import { useEffect, useState } from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, View, Dimensions, Text } from 'react-native';
 import * as Location from 'expo-location';
 
 export default function Map({ navigation, route, colorScheme }) {
+    // Make variables
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
     const [bars, setBars] = useState([{}])
+    // Set region
     const [region, setRegion] = useState({
         latitude: 51.926517,
         longitude: 4.462456,
         latitudeDelta: 0.0022,
         longitudeDelta: 0.0221
     })
-  
+
     useEffect(() => {
         // console.log(route);
+        // If pressed on map, go to current location
         navigation.addListener('tabPress', (e) => {
             if (location) {
                 setRegion({
@@ -71,10 +74,10 @@ export default function Map({ navigation, route, colorScheme }) {
     }
 
     useEffect(() => {
-        // Fetch for the hotspots and put them in hotspots
+        // Fetch bars and put them in bars
         const getBars = async () => {
             try {
-                await fetch("https://stud.hosted.hr.nl/1004149/bars/bars.json", {cache: 'no-cache'})
+                await fetch("https://stud.hosted.hr.nl/1004149/bars/bars.json")
                     .then((response) => response.json())
                     .then((results) => {
                         let arr = []
@@ -91,26 +94,34 @@ export default function Map({ navigation, route, colorScheme }) {
         getBars()
     }, [])
 
-    // console.log(bars);
+    // make bar foreach bar in bars
     const markers = bars.map((bar, index) => {
         // console.log(bar)
         return (
+            // Make marker foreach bar
             <Marker
                 key={index}
-                coordinate={{ 
+                coordinate={{
                     latitude: bar.lat,
-                    longitude: bar.lon 
+                    longitude: bar.lon
                 }}
                 title={bar.name}
-                image = {require('../src/marker.png')}
-                />
-                )
-            })
+                // Gets huge after publish
+                // image = {require('../src/flag-marker.png')}
+                onPress={() => navigation.navigate("Descriptions", {
+                    bar: bar
+                })
+                }
+            >
+            </Marker>
+        )
+    })
 
     return (
         <View style={styles.container}>
             <MapView
                 style={styles.map}
+                // Show the location of the user on the map
                 showsUserLocation
                 region={region}
             >
