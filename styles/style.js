@@ -16,12 +16,15 @@ const style = StyleSheet.create({
   },
   flatlistItem: {
         width: Dimensions.get("window").width -90,
-        backgroundColor: 'lightgreen',
-        borderRadius: 10,
+        backgroundColor: 'black',
         alignItems: 'center',
+        textAlign: 'center',
         height: 150,
         marginBottom: 25,
+        padding: 60,
         shadowColor: '#000',
+        fontWeight: 'bold',
+        fontSize: 20,
         shadowOffset: {
             width: 3,
             height: 3,

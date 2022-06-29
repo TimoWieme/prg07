@@ -20,7 +20,14 @@ const dark = StyleSheet.create({
   pickerText: {
     color: "white",
     backgroundColor: "#1e1f26",
-  }
+  },
+  flatlistItem: {
+    ...style.flatlistItem,
+    color: 'white',
+    backgroundColor: "#6eccad",
+    shadowColor: 'white',
+
+},
 
 })
 

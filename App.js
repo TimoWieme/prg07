@@ -1,6 +1,6 @@
 // import * as React from 'react';
 import React, { useState, useEffect } from 'react';
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -41,7 +41,7 @@ export default function App() {
     colors: {
       ...DefaultTheme.colors,
       card: '#131318',
-      text: 'black',
+      text: 'white',
       border: 'rgba(0, 0, 0, 0.5)',
     },
   };
@@ -64,6 +64,7 @@ export default function App() {
     colorScheme.navTheme = DefaultTheme
     colorScheme.tabBarActive = '#b30000'
     colorScheme.tabBarinActive = '#d3d3d3'
+    colorScheme.flatlistItemStyle = light.flatlistItem
   } else if (theme === 'dark') {
     colorScheme.textStyle = dark.text
     colorScheme.containerStyle = dark.container
@@ -73,6 +74,7 @@ export default function App() {
     colorScheme.navTheme = darkMode
     colorScheme.tabBarActive = '#b30000'
     colorScheme.tabBarinActive = '#d3d3d3'
+    colorScheme.flatlistItemStyle = dark.flatlistItem
   } else if (theme === 'beer') {
     colorScheme.textStyle = beer.text
     colorScheme.containerStyle = beer.container
@@ -82,6 +84,7 @@ export default function App() {
     colorScheme.navTheme = beerMode
     colorScheme.tabBarActive = 'yellow'
     colorScheme.tabBarinActive = 'white'
+    colorScheme.flatlistItemStyle = beer.flatlistItem
   }
 
 

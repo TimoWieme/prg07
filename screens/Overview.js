@@ -4,21 +4,26 @@ import { Text, FlatList, SafeAreaView } from 'react-native';
 export default function Overview({ navigation, colorScheme }) {
     const [bars, setBars] = useState([{}])
 
-    const getBars = async () => {
-        try {
-            const response = await fetch('https://stud.hosted.hr.nl/1004149/bars/bars.json');
-            const json = await response.json();
-            setBars(json.bars);
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
-    }
-
     useEffect(() => {
-        getBars();
-    }, []);
+        // Fetch for the hotspots and put them in hotspots
+        const getBars = async () => {
+            try {
+                await fetch("https://stud.hosted.hr.nl/1004149/bars/bars.json", {cache: 'no-cache'})
+                    .then((response) => response.json())
+                    .then((results) => {
+                        let arr = []
+                        // console.log(results);
+                        for (let result of results) {
+                            arr.push(result)
+                        }
+                        setBars(arr)
+                    })
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        getBars()
+    }, [])
     
     console.log(bars);
     
@@ -33,7 +38,7 @@ export default function Overview({ navigation, colorScheme }) {
                 data={bars}
                 renderItem={({ item }) =>
                     <Text
-                        style={[colorScheme.flatlistItemSyle, colorScheme.textStyle]}
+                        style={[colorScheme.flatlistItemStyle, colorScheme.textStyle]}
                         // On press go the map screen and go to the coordinates
                         onPress={() => navigation.navigate("Map", {
                             "latitude": item.lat,

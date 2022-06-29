@@ -25,7 +25,6 @@ const light = StyleSheet.create({
     },
     flatlistItem: {
         ...style.flatlistItem,
-        backgroundColor: '#f2f2f2',
         color: 'black',
     },
     safeAreaView: {

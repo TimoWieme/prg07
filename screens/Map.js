@@ -1,45 +1,28 @@
 import MapView, { Marker } from 'react-native-maps';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, View, Dimensions } from 'react-native';
 import * as Location from 'expo-location';
 
-export default function Map({ navigation, route, colorScheme}) {
+export default function Map({ navigation, route, colorScheme }) {
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
-    const [bars, setBars] = useState([{}]);
-    const [isLoading, setLoading] = useState(true);
+    const [bars, setBars] = useState([{}])
     const [region, setRegion] = useState({
         latitude: 51.926517,
         longitude: 4.462456,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421
+        latitudeDelta: 0.0022,
+        longitudeDelta: 0.0221
     })
-
-    const getBars = async () => {
-        try {
-            const response = await fetch('https://stud.hosted.hr.nl/1004149/bars/bars.json');
-            const json = await response.json();
-            setBars(json.bars);
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
-    }
-
+  
     useEffect(() => {
-        getBars();
-    }, []);
-
-    useEffect(() => {
-        console.log(route);
+        // console.log(route);
         navigation.addListener('tabPress', (e) => {
             if (location) {
                 setRegion({
                     latitude: location.coords.latitude,
                     longitude: location.coords.longitude,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421
+                    latitudeDelta: 0.0022,
+                    longitudeDelta: 0.0221
                 })
             }
         })
@@ -48,18 +31,18 @@ export default function Map({ navigation, route, colorScheme}) {
             setRegion({
                 latitude: route.params.latitude,
                 longitude: route.params.longitude,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421
+                latitudeDelta: 0.0022,
+                longitudeDelta: 0.0221
             })
-            console.log(region);
+            // console.log(region);
         }
         // Else if location is given than go to current location
         else if (location) {
             setRegion({
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421
+                latitudeDelta: 0.0022,
+                longitudeDelta: 0.0221
             })
         }
     }, [location, route.params?.latitude, route])
@@ -87,7 +70,30 @@ export default function Map({ navigation, route, colorScheme}) {
         text = JSON.stringify(location);
     }
 
+    useEffect(() => {
+        // Fetch for the hotspots and put them in hotspots
+        const getBars = async () => {
+            try {
+                await fetch("https://stud.hosted.hr.nl/1004149/bars/bars.json", {cache: 'no-cache'})
+                    .then((response) => response.json())
+                    .then((results) => {
+                        let arr = []
+                        // console.log(results);
+                        for (let result of results) {
+                            arr.push(result)
+                        }
+                        setBars(arr)
+                    })
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        getBars()
+    }, [])
+
+    // console.log(bars);
     const markers = bars.map((bar, index) => {
+        // console.log(bar)
         return (
             <Marker
                 key={index}
@@ -103,13 +109,13 @@ export default function Map({ navigation, route, colorScheme}) {
 
     return (
         <View style={styles.container}>
-                <MapView
-                    style={styles.map}
-                    showsUserLocation
-                    region={region}
-                >
-                    {markers}
-                </MapView>
+            <MapView
+                style={styles.map}
+                showsUserLocation
+                region={region}
+            >
+                {markers}
+            </MapView>
         </View>
     );
 }
