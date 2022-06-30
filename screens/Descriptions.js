@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Ionicons } from "@expo/vector-icons";
-import { Text, View, TextInput, SafeAreaView, KeyboardAvoidingView, Button, FlatList, TouchableOpacity } from 'react-native';
+import { Text, View, TextInput, SafeAreaView, KeyboardAvoidingView, Button, FlatList, TouchableOpacity, Dimensions } from 'react-native';
 
 export default function Description({ navigation, colorScheme, route }) {
-    const [text, setText] = useState('Put description here')
+    const [text, setText] = useState('')
+    // Set bar name
     const [name, setName] = useState(route.params?.bar.name)
     const [descriptions, setDescriptions] = useState('Description')
-    const [latitude, setLatitude] = useState(route.params?.bar.latitude)
-    const [longitude, setLongitude] = useState(route.params?.bar.longitude)
+    // Get and set the latitude and longitude
+    const [lat, setLatitude] = useState(route.params?.bar.lat)
+    const [lon, setLongitude] = useState(route.params?.bar.lon)
 
 
     // Get the descriptions from the LocalStorage
@@ -34,24 +35,24 @@ export default function Description({ navigation, colorScheme, route }) {
             }
         }
     }
-       //Delete description when trashcan is pressed
-       const deleteHandler = (id) => {
+    //Delete description when delete button is pressed
+    const deleteHandler = (id) => {
         setDescriptions((prevDescriptions) => {
             return prevDescriptions.filter(description => description.id != id)
         })
     }
 
-        //change description value
-        const changeHandler = (value) => {
-            setText(value + ` (${name})`)
-        }
+    //change description value
+    const changeHandler = (value) => {
+        setText(`${name} : ` + value)
+    }
 
-            //Submit description to add the data to the bar
-    const submitHandler = (text, name, latitude, longitude) => {
+    //Submit description to add the data to the bar
+    const submitHandler = (text, name, lat, lon) => {
         if (name != undefined) {
             setDescriptions((prevDescriptions) => {
                 return [
-                    { text: text, id: Math.random().toString(), name: name, latitude: latitude, longitude: longitude },
+                    { text: text, id: Math.random().toString(), name: name, lat: lat, lon: lon },
                     ...prevDescriptions
                 ]
             })
@@ -64,32 +65,39 @@ export default function Description({ navigation, colorScheme, route }) {
         getDescriptions()
     }, [])
 
-    // Create the notes for the flatlist
+    // Create the flatlist with the descriptions
     const DescriptionsItem = ({ description, deleteHandler }) => {
         return (
-            // Touchable to go to the map screen and go to the coordinates
+            // go to the map screen and go to the coordinates of the bar clicked on
             <TouchableOpacity
-                style={[colorScheme.flatlistItemStyle, { flex: 1 }]}
+                style={colorScheme.touchableopacityStyle}
                 onPress={() => navigation.navigate("Map", {
-                    "latitude": description.latitude,
-                    "longitude": description.longitude,
+                    "latitude": description.lat,
+                    "longitude": description.lon,
                 })}>
-                {/* Text of the note */}
-                <Text style={colorScheme.textStyle}>
-                    {description.text}
-                    <TouchableOpacity>
-                        <View style={{
-                            height: 25,
-                            width: 25,
-                        }}>
-                            {/* Trash Icon */}
-                            <Ionicons
-                                name="trash"
-                                size={20}
-                                onPress={() => deleteHandler(description.id)} />
-                        </View>
-                    </TouchableOpacity>
-                </Text>
+                    {/* Make the card for the description */}
+                <View style=
+                    {[colorScheme.touchableopacityStyle, {
+                        backgroundColor: '#6eccad',
+                        padding: 10,
+                        margin: 10,
+                        marginBottom: 10
+                    }]}>
+                    {/* Text of the description */}
+                    <Text style={[colorScheme.textStyle,
+                    {
+                        width: Dimensions.get("window").width - 90,
+                        alignItems: 'center'
+                    }
+                    ]}>
+                        {description.text}
+                    </Text>
+                    {/* Button to delete description */}
+                    <Button
+                        title="Delete"
+                        onPress={() => deleteHandler(description.id)} >
+                    </Button>
+                </View>
             </TouchableOpacity>
         )
     }
@@ -97,13 +105,13 @@ export default function Description({ navigation, colorScheme, route }) {
     useEffect(() => {
         // set the name, latitude, longitude
         setName(route.params?.bar.name)
-        if (route.params?.bar.latitude) {
-            setLatitude(route.params?.bar.latitude)
-            setLongitude(route.params?.bar.longitude)
+        if (route.params?.bar.lat) {
+            setLatitude(route.params?.bar.lat)
+            setLongitude(route.params?.bar.lon)
         }
-    }, [route, route.params?.latitude])
+    }, [route, route.params?.lat])
 
-    // Use Effect to get the notes
+    // Get descriptions
     useEffect(() => {
         getDescriptions()
     }, [])
@@ -126,9 +134,10 @@ export default function Description({ navigation, colorScheme, route }) {
                     <TextInput
                         style={colorScheme.input}
                         onChangeText={changeHandler}
-                    />
+                        placeholder="Zet description hier"
+                    ></TextInput>
                     <Button title="Add Description" onPress={() => {
-                        submitHandler(text, name, latitude, longitude)
+                        submitHandler(text, name, lat, lon)
                     }} />
                 </View>
                 {/* Descriptions flatlist */}

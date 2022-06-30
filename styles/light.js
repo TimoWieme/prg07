@@ -37,6 +37,11 @@ const light = StyleSheet.create({
         ...style.input,
         color: 'black',
         backgroundColor:'white'
+    },
+    touchableopacity: {
+        ...style.touchableopacity,
+        backgroundColor: '#6eccad', 
+        color: 'black'
     }
 
 })

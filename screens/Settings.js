@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
 
@@ -24,20 +24,20 @@ export default function Settings({ navigation, colorScheme, storeTheme }) {
     }, [])
 
 
-    // console.log(colorScheme.pickerTextStyle)
     return (
         <View style={colorScheme.containerStyle}>
             <Text style={colorScheme.titleStyle}>Settings Screen!</Text>
+            {/* Picker to select a theme */}
             <Picker
                 style={colorScheme.pickerContainerStyle}
                 selectedValue={themeColor}
                 itemStyle={colorScheme.pickerTextStyle}
-                onValueChange={(itemValue, itemIndex) =>{
+                onValueChange={(itemValue, itemIndex) => {
                     // Safe theme on change
                     setThemeColor(itemValue)
                     storeTheme(itemValue)
                 }}>
-                    {/* Theme choices */}
+                {/* Theme choices */}
                 <Picker.Item label="Light Mode" value="light" />
                 <Picker.Item label="Dark Mode" value="dark" />
                 <Picker.Item label="Beer Mode" value="beer" />

@@ -9,7 +9,7 @@ import beer from "./styles/beer.js";
 import dark from "./styles/dark.js";
 import light from "./styles/light.js";
 
-// Importeer all pages
+// import all pages
 import Home from './screens/Home';
 import Map from './screens/Map';
 import Overview from './screens/Overview';
@@ -69,6 +69,7 @@ export default function App() {
     colorScheme.tabBarinActive = '#d3d3d3'
     colorScheme.flatlistItemStyle = light.flatlistItem
     colorScheme.input = light.input
+    colorScheme.touchableopacity = light.touchableopacity
     // If in dark mode, change these elements to the dark color
 
   } else if (theme === 'dark') {
@@ -82,6 +83,8 @@ export default function App() {
     colorScheme.tabBarinActive = '#d3d3d3'
     colorScheme.flatlistItemStyle = dark.flatlistItem
     colorScheme.input = dark.input
+    colorScheme.touchableopacity = dark.touchableopacity
+
 
     // If in beer mode, change these elements to the beer color
   } else if (theme === 'beer') {
@@ -95,6 +98,8 @@ export default function App() {
     colorScheme.tabBarinActive = 'white'
     colorScheme.flatlistItemStyle = beer.flatlistItem
     colorScheme.input = beer.input
+    colorScheme.touchableopacity = beer.touchableopacity
+
 
   }
 

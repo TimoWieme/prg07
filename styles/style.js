@@ -41,6 +41,12 @@ const style = StyleSheet.create({
   text: {
     fontsize: 1,
     alignItems: 'top',
+  },
+  touchableopacity: {
+    flex: 1, 
+    alignItems: 'center', 
+    marginBottom: 20, 
+    width: Dimensions.get("window").width -90
   }
 });
 

@@ -74,7 +74,7 @@ export default function Map({ navigation, route, colorScheme }) {
     }
 
     useEffect(() => {
-        // Fetch bars and put them in bars
+        // Fetch bars and put them in Setbars
         const getBars = async () => {
             try {
                 await fetch("https://stud.hosted.hr.nl/1004149/bars/bars.json")
@@ -106,7 +106,7 @@ export default function Map({ navigation, route, colorScheme }) {
                     longitude: bar.lon
                 }}
                 title={bar.name}
-                // Gets huge after publish
+                // Gets huge after publish, so went back to normal markers
                 // image = {require('../src/flag-marker.png')}
                 onPress={() => navigation.navigate("Descriptions", {
                     bar: bar
