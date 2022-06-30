@@ -14,3 +14,12 @@ This application is written in React-Native. I made a app where users can see wh
 - [X]  Local Storage is available offline
 - [x]  Current location and location of the hotspots are visible on the map
 - [x]  Parameters are sent back and forth between different screens
+
+
+### Extra To-Do's
+- [ ] Notification when you come close to a hotspot
+- [ ] Biometric security
+- [ ] Compas mode
+- [ ] Fotos can be saved and showed on the map
+- [ ] Localstorage can be edited, deleted and shared with friends
+- [X] You dont need network to use the app
