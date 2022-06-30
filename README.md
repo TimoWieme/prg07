@@ -18,7 +18,7 @@ This application is written in React-Native. I made a app where users can see wh
 
 ### Extra To-Do's
 - [ ] Notification when you come close to a hotspot
-- [ ] Biometric security
+- [X] Biometric security
 - [ ] Compas mode
 - [ ] Fotos can be saved and showed on the map
 - [ ] Localstorage can be edited, deleted and shared with friends
