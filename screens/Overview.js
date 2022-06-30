@@ -25,9 +25,9 @@ export default function Overview({ navigation, colorScheme }) {
         }
         getBars()
     }, [])
-    
+
     // console.log(bars);
-    
+
 
     return (
         <SafeAreaView style={colorScheme.containerStyle}>
@@ -38,12 +38,15 @@ export default function Overview({ navigation, colorScheme }) {
             <FlatList
                 data={bars}
                 renderItem={({ item }) =>
-                <OverviewCard input={item.name} style={[colorScheme.flatlistItemStyle, colorScheme.textStyle]} onPress={() => navigation.navigate("Map", {
-                    "latitude": item.lat,
-                    "longitude": item.lon,
-                })} />
-            }
+                    <OverviewCard
+                        input={item.name}
+                        style={[colorScheme.flatlistItemStyle, colorScheme.textStyle]}
+                        onPress={() => navigation.navigate("Map", {
+                            "latitude": item.lat,
+                            "longitude": item.lon,
+                        })} />
+                }
             />
-                </SafeAreaView>
-                )
-            }
+        </SafeAreaView>
+    )
+}

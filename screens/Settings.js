@@ -18,7 +18,7 @@ export default function Settings({ navigation, colorScheme, storeTheme }) {
         }
     }
 
-
+    // Get theme with useEffect
     useEffect(() => {
         getTheme()
     }, [])

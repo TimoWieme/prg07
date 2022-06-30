@@ -29,7 +29,7 @@ const dark = StyleSheet.create({
 },
 input: {
   ...style.input,
-  color: 'white',
+  color: 'black',
   backgroundColor:'white'
   
 }

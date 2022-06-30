@@ -3,7 +3,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Text, View, TextInput, SafeAreaView, KeyboardAvoidingView, Button, FlatList, TouchableOpacity, Dimensions } from 'react-native';
 // Import expo biometric auth
 import * as LocalAuthentication from 'expo-local-authentication';
-import DescriptionCard from "../components/OverviewCard";
 
 export default function Description({ navigation, colorScheme, route }) {
     const [text, setText] = useState('')
@@ -15,43 +14,43 @@ export default function Description({ navigation, colorScheme, route }) {
     const [lon, setLongitude] = useState(route.params?.bar.lon)
 
     const Auth = async () => {
-        
-        try{
-          // Check if device is compatible
-        const isCompatible = await
-        LocalAuthentication.hasHardwareAsync();
-    
-        if (!isCompatible) {
-          throw new Error('Your device isn\'t compatible.')
+
+        try {
+            // Check if device is compatible
+            const isCompatible = await
+                LocalAuthentication.hasHardwareAsync();
+
+            if (!isCompatible) {
+                throw new Error('Your device isn\'t compatible.')
+            }
+            // Checking if device has biometrics records
+            const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+
+            if (!isEnrolled) {
+                throw new Error('No Faces / Fingers found.')
+            }
+
+            // Authenticate user
+            await LocalAuthentication.authenticateAsync();
+
+            Alert.alert('Authenticated', 'Welcome back !')
+        } catch (error) {
+            Alert.alert('An error as occured', error?.message);
         }
-        // Checking if device has biometrics records
-        const isEnrolled = await LocalAuthentication.isEnrolledAsync();
-    
-        if (!isEnrolled) {
-          throw new Error('No Faces / Fingers found.')
-        }
-    
-        // Authenticate user
-        await LocalAuthentication.authenticateAsync();
-    
-        Alert.alert('Authenticated', 'Welcome back !')
-      } catch (error) {
-        Alert.alert('An error as occured', error?.message);
-      }
     }
 
-// Get the descriptions from the LocalStorage
-const getDescriptions = async () => {
-    try {
-        const storedDescriptions = await AsyncStorage.getItem('descriptions')
-        if (descriptions !== null) {
-            setDescriptions(JSON.parse(storedDescriptions))
-        } else {
+    // Get the descriptions from the LocalStorage
+    const getDescriptions = async () => {
+        try {
+            const storedDescriptions = await AsyncStorage.getItem('descriptions')
+            if (descriptions !== null) {
+                setDescriptions(JSON.parse(storedDescriptions))
+            } else {
+            }
+        } catch (err) {
+            console.log(err)
         }
-    } catch (err) {
-        console.log(err)
     }
-}
 
     // Store the notes from LocalStorage
     const storeDescriptions = () => {
@@ -88,12 +87,6 @@ const getDescriptions = async () => {
         }
     }
 
-    // get descriptions
-    useEffect(() => {
-        getDescriptions()
-        Auth()
-    }, [])
-
     // Create the flatlist with the descriptions
     const DescriptionsItem = ({ description, deleteHandler }) => {
         return (
@@ -104,7 +97,7 @@ const getDescriptions = async () => {
                     "latitude": description.lat,
                     "longitude": description.lon,
                 })}>
-                    {/* Make the card for the description */}
+                {/* Make the card for the description */}
                 <View style=
                     {[colorScheme.touchableopacityStyle, {
                         backgroundColor: '#6eccad',
@@ -143,6 +136,7 @@ const getDescriptions = async () => {
     // Get descriptions
     useEffect(() => {
         getDescriptions()
+        Auth()
     }, [])
 
     // store descriptions
