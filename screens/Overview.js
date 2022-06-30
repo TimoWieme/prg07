@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Text, FlatList, SafeAreaView } from 'react-native';
+import OverviewCard from '../components/OverviewCard'
 
 export default function Overview({ navigation, colorScheme }) {
     const [bars, setBars] = useState([{}])
@@ -37,17 +38,11 @@ export default function Overview({ navigation, colorScheme }) {
             <FlatList
                 data={bars}
                 renderItem={({ item }) =>
-                    <Text
-                        style={[colorScheme.flatlistItemStyle, colorScheme.textStyle]}
-                        // On press go the map screen and go to the coordinates
-                        onPress={() => navigation.navigate("Map", {
-                            "latitude": item.lat,
-                            "longitude": item.lon,
-                        })}
-                    >
-                        {item.name}
-                    </Text>
-                }
+                <OverviewCard input={item.name} style={[colorScheme.flatlistItemStyle, colorScheme.textStyle]} onPress={() => navigation.navigate("Map", {
+                    "latitude": item.lat,
+                    "longitude": item.lon,
+                })} />
+            }
             />
                 </SafeAreaView>
                 )

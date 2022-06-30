@@ -25,6 +25,7 @@
     "react-dom": "17.0.2",
     "react-native": "0.68.2",
     "react-native-appearance": "^0.0.0",
+    "react-native-biometrics": "^2.2.0",
     "react-native-card-component": "^0.1.0",
     "react-native-event-listeners": "^1.0.7",
     "react-native-maps": "0.30.2",
@@ -33,7 +34,8 @@
     "react-native-screens": "~3.11.1",
     "react-native-svg": "12.3.0",
     "react-native-web": "0.17.7",
-    "webpack-dev-server": "^4.9.2"
+    "webpack-dev-server": "^4.9.2",
+    "expo-local-authentication": "~12.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
